@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cognitive Biases &amp; Heuristics in Security Decisions</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#E50914;--hot:#FF1744;--pk:#FF2E93;--blk:#0D0D0D;--ch:#171717;color-scheme:dark;box-sizing:border-box}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:#0D0D0D;color:#fff;font-family:'Nunito','Trebuchet MS',system-ui,sans-serif;font-weight:700;overflow:hidden;line-height:1.5}
+body::before{content:"";position:fixed;inset:0;background:repeating-linear-gradient(135deg,#E5091414 0 2px,transparent 2px 22px),radial-gradient(#ffffff16 1.2px,transparent 1.5px) 0 0/18px 18px;pointer-events:none}
+body::after{content:"";position:fixed;left:-20%;right:-20%;top:40%;height:120px;background:repeating-linear-gradient(90deg,#E50914 0 36px,transparent 36px 72px);opacity:.09;transform:rotate(-8deg);pointer-events:none}
+#tk{position:fixed;top:0;left:0;right:0;height:28px;background:var(--red);color:#0D0D0D;font-family:'Courier New',monospace;font-weight:700;font-size:.8rem;overflow:hidden;white-space:nowrap;z-index:40;border-bottom:2px solid #fff}
+#tk div{display:inline-block;padding-top:4px;animation:mq 50s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+#bar{position:fixed;top:30px;left:0;height:6px;width:0;background:linear-gradient(90deg,#fff,var(--hot));transition:width .6s cubic-bezier(.22,1,.36,1);z-index:30}
+.s{position:fixed;inset:36px 0 72px;overflow-y:auto;padding:30px 22px 40px;visibility:hidden;clip-path:inset(0 100% 0 0);z-index:1}
+.s.on{visibility:visible;clip-path:inset(0);z-index:2;transition:clip-path .65s cubic-bezier(.7,0,.2,1)}
+.s::before{content:attr(data-n);position:absolute;right:2%;top:0;font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;font-size:min(34vw,18rem);line-height:1;color:transparent;-webkit-text-stroke:2px #E5091440;pointer-events:none}
+.s.on .w>*{animation:up .6s cubic-bezier(.22,1,.36,1) both}
+.s.on .w>*:nth-child(2){animation-delay:.12s}.s.on .w>*:nth-child(3){animation-delay:.2s}.s.on .w>*:nth-child(4){animation-delay:.28s}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.w{max-width:820px;margin:0 auto;position:relative}
+.hero::before{content:"";position:absolute;inset:-60px -40px;background:repeating-radial-gradient(circle at 50% 45%,transparent 0 26px,#E5091426 26px 30px);z-index:-1}
+.bt{font-family:'Digitalt','Chakra Petch','Arial Narrow',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:clamp(2rem,8vw,3.8rem);line-height:1.1;margin:0 0 10px;color:var(--red);text-shadow:3px 0 #fff,-3px 0 #fff,0 3px #fff,0 -3px #fff,2px 2px #fff,-2px -2px #fff,2px -2px #fff,-2px 2px #fff,0 8px 0 #7a0509,0 10px 0 #000}
+.bt .c2{color:#fff;text-shadow:3px 0 var(--red),-3px 0 var(--red),0 3px var(--red),0 -3px var(--red),2px 2px var(--red),-2px -2px var(--red),2px -2px var(--red),-2px 2px var(--red),0 8px 0 #7a0509,0 10px 0 #000}
+.lead{font-size:1.2rem;margin:14px 0 16px;border-left:6px solid var(--red);padding-left:12px}
+.ch{display:inline-block;background:#000;color:#fff;border:2px solid var(--red);padding:5px 14px;margin:0 10px 12px 0;font-family:'Courier New',monospace;font-size:.82rem;text-transform:uppercase;letter-spacing:1px;box-shadow:4px 4px 0 var(--red)}
+.ch:nth-child(odd){transform:rotate(-1.5deg)}.ch:nth-child(even){transform:rotate(1.2deg)}
+.win{position:relative;background:var(--ch);border:3px solid #fff;border-radius:14px;box-shadow:8px 8px 0 var(--red),16px 16px 0 #E5091433;margin:26px 12px 18px 0}
+.stk{position:absolute;top:-22px;right:14px;background:var(--red);color:#fff;font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;letter-spacing:1px;padding:4px 16px;border:3px solid #fff;border-radius:999px;transform:rotate(-5deg);box-shadow:3px 3px 0 #000;z-index:3;font-size:.95rem}
+.tb{display:flex;align-items:center;gap:7px;padding:8px 12px;background:repeating-linear-gradient(90deg,#E50914 0 14px,#C20812 14px 28px);border-bottom:3px solid #fff;border-radius:10px 10px 0 0;font-family:'Courier New',monospace;font-size:.85rem;color:#fff;text-transform:uppercase;letter-spacing:1px}
+.tb i{width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #000}.tb i:nth-child(2){background:#000;border-color:#fff}
+.tb span{margin-left:8px}
+.wb{padding:20px;min-height:240px;position:relative;overflow:hidden;background:radial-gradient(#ffffff10 1px,transparent 1.5px) 0 0/10px 10px;border-radius:0 0 11px 11px}
+.wb p{margin:0 0 12px}
+button,input{font:inherit}
+.b{position:relative;border:3px solid #fff;color:#fff;font-weight:800;padding:10px 22px;border-radius:999px;cursor:pointer;background:linear-gradient(180deg,#FF4D5E,#E50914 55%,#B00610);box-shadow:0 5px 0 #6b0309,0 0 0 2px #000;text-shadow:0 1px 2px #0008;transition:transform .15s ease,box-shadow .15s ease}
+.b::before{content:"";position:absolute;left:12%;right:12%;top:3px;height:38%;border-radius:999px;background:linear-gradient(180deg,#fff9,#fff0);pointer-events:none}
+.b:hover:not(:disabled){transform:translateY(-2px)}.b:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #6b0309,0 0 0 2px #000}
+.b.cy{background:#fff;color:#0D0D0D;text-shadow:none;box-shadow:0 5px 0 #8a8a8a,0 0 0 2px #000}
+.b.li{background:linear-gradient(180deg,#FF6FB5,#FF2E93 55%,#C71E70);box-shadow:0 5px 0 #7a0f44,0 0 0 2px #000}
+.b:disabled{opacity:.45}
+.b:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.row{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px}
+.hud{display:flex;justify-content:space-between;margin-bottom:12px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:1px;font-size:.9rem}
+.pip{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--red);border:2px solid #fff;margin-left:4px;vertical-align:middle}
+.msg{background:#000;border:3px solid var(--red);border-radius:12px;padding:14px 16px;font-size:1.1rem;box-shadow:6px 6px 0 #E5091466;animation:up .4s cubic-bezier(.22,1,.36,1)}
+.url{background:#000;border:2px dashed #fff;border-radius:8px;padding:8px 12px;font-family:'Courier New',monospace;color:#FF6B76;word-break:break-all}
+.fb{margin:14px 0 0;min-height:1.5em}
+.mt{height:18px;background:#000;border:2px solid #fff;border-radius:9px;overflow:hidden;margin:10px 0}
+.mt i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,#E50914 0 10px,#B00610 10px 20px);transition:width .35s ease}
+.mt i.pk{background:repeating-linear-gradient(45deg,#FF2E93 0 10px,#C71E70 10px 20px)}
+label.o{display:flex;gap:10px;align-items:center;background:#000;border:2px solid #E5091480;border-radius:10px;padding:8px 12px;margin:6px 0;cursor:pointer}
+input[type=checkbox]{accent-color:var(--red);width:18px;height:18px}input[type=range]{accent-color:var(--red);width:100%}
+.mo{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:14px}
+.mo div{background:#000;border:2px solid #444;border-radius:8px;text-align:center;padding:5px 0;font-size:.75rem;line-height:1.3;animation:up .3s ease}
+.mo .x{background:var(--red);border-color:#fff}
+.trk{position:relative;height:46px;background:#000;border:2px solid #fff;border-radius:23px;margin:14px 0}
+.trk span{position:absolute;top:7px;padding:2px 12px;border-radius:999px;font-family:'Courier New',monospace;font-size:.8rem;letter-spacing:1px}
+.hk{background:var(--red);color:#fff;border:2px solid #fff;transition:left .6s cubic-bezier(.22,1,.36,1)}.you{right:10px;background:#fff;color:#000}
+.area{position:relative;height:290px;background:#000;background-image:linear-gradient(#E5091420 1px,transparent 1px),linear-gradient(90deg,#E5091420 1px,transparent 1px);background-size:28px 28px;border:2px solid #fff;border-radius:10px;overflow:hidden;margin-top:10px}
+.pp{position:absolute;width:190px;background:var(--ch);color:#fff;border:3px solid var(--red);border-radius:12px;padding:8px 10px;font-size:.85rem;box-shadow:5px 5px 0 #000;animation:up .3s ease}
+.pp .b{padding:5px 12px;font-size:.8rem;margin:4px 4px 0 0}.pp .sm{background:#333;color:#ddd;box-shadow:none;text-shadow:none;font-weight:600;border-color:#777}.pp .sm::before{display:none}
+.rw{position:absolute;inset:0;background:repeating-linear-gradient(45deg,#C20812 0 24px,#E50914 24px 48px);color:#fff;padding:22px;z-index:5;animation:up .4s ease}
+.rw h3{font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;text-transform:uppercase;font-size:1.6rem;margin:0 0 8px;text-shadow:3px 3px 0 #000}
+.sb{display:flex;align-items:center;gap:10px;margin:10px 0}.sb span{width:130px;font-family:'Courier New',monospace;text-transform:uppercase;font-size:.85rem}.sb .mt{flex:1;margin:0}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:#000;border-top:3px solid var(--red);z-index:30}
+#dots{display:flex;gap:8px}#dots i{width:12px;height:12px;background:#000;border:2px solid #fff;transition:transform .3s,background .3s}#dots i.on{background:var(--red);transform:rotate(45deg) scale(1.2)}
+#snd{position:fixed;top:calc(46px + env(safe-area-inset-top,0px));right:12px;z-index:41;padding:5px 14px;font-size:.75rem}
+#copw{position:fixed;left:6px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:35;pointer-events:none}
+#cop{display:block;width:92px;height:auto;animation:cbob 2.8s ease-in-out infinite;filter:drop-shadow(3px 3px 0 #000)}
+@keyframes cbob{50%{transform:translateY(-3px)}}
+#cb{position:absolute;left:66%;top:-4px;background:#fff;color:#000;border:3px solid #000;border-radius:12px;padding:1px 10px;font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;font-size:.8rem;white-space:nowrap;opacity:0;transition:opacity .2s}
+#armsvg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:36;visibility:hidden}
+.rg{position:fixed;width:20px;height:20px;margin:-10px 0 0 -10px;border:3px solid #fff;border-radius:50%;pointer-events:none;z-index:37;animation:rg .45s ease-out forwards}
+@keyframes rg{to{transform:scale(3.2);opacity:0}}
+#cop .m-h,#cop .m-a{display:none}#cop.h .m-n,#cop.a .m-n{display:none}#cop.h .m-h,#cop.a .m-a{display:inline}
+#cop.h{animation:cjump .6s ease-out}#cop.a{animation:cslap .5s ease-out}
+@keyframes cjump{30%{transform:translateY(-16px)}60%{transform:translateY(0)}80%{transform:translateY(-6px)}}
+@keyframes cslap{40%{transform:translateX(14px) rotate(-8deg)}100%{transform:none}}
+#hkw{position:fixed;right:6px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:35;pointer-events:none}
+#hk{display:block;width:92px;height:auto;animation:cbob 3.2s ease-in-out infinite;filter:drop-shadow(-3px 3px 0 #000)}
+#hk .m-h,#hk .m-s{display:none}#hk.h .m-n,#hk.s .m-n{display:none}#hk.h .m-h,#hk.s .m-s{display:inline}
+#hk.h{animation:hlaugh .25s linear 6}#hk.s{animation:hsad .8s ease-out forwards}
+@keyframes hlaugh{50%{transform:translateY(-6px) rotate(3deg)}}
+@keyframes hsad{to{transform:translateY(5px) scale(.97)}}
+#hk .tr{animation:tear 1s ease-in infinite}#hk .t2{animation-delay:.45s}
+@keyframes tear{from{transform:translateY(0);opacity:1}to{transform:translateY(18px);opacity:0}}
+#hb{position:absolute;right:62%;top:-4px;background:#fff;color:#000;border:3px solid #000;border-radius:12px;padding:1px 10px;font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;font-size:.8rem;white-space:nowrap;opacity:0;transition:opacity .2s}
+#slp{position:fixed;top:26%;left:0;width:min(68vw,340px);height:min(68vw,340px);z-index:60;pointer-events:none;opacity:0}
+#slp.go{animation:slp .55s cubic-bezier(.5,0,.3,1) forwards}
+@keyframes slp{0%{opacity:1;transform:translateX(-110%) rotate(-30deg)}40%{opacity:1;transform:translateX(30vw) rotate(6deg)}52%{opacity:1;transform:translateX(26vw) rotate(0) scale(1.08)}100%{opacity:0;transform:translateX(-20%) rotate(-12deg)}}
+#flash{position:fixed;inset:0;background:radial-gradient(circle,#E5091400 25%,#E50914b0 100%);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;z-index:59}
+#flash span{font-family:'Digitalt','Chakra Petch',sans-serif;font-weight:700;font-size:clamp(3rem,16vw,7rem);color:#fff;text-shadow:5px 5px 0 #E50914,9px 9px 0 #000;transform:rotate(-8deg)}
+#flash.go{animation:fls .55s ease-out}
+@keyframes fls{0%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:scale(1)}}
+body.shake{animation:shk .4s linear}
+@keyframes shk{20%{transform:translate(-9px,4px)}40%{transform:translate(8px,-4px)}60%{transform:translate(-5px,2px)}80%{transform:translate(3px,-2px)}}
+@media (prefers-reduced-motion:reduce){#slp,#cop.h,#cop.a,#hk.h,#hk.s,body.shake,#flash.go,#hk .tr{animation:none}}
+@media (prefers-reduced-motion:reduce){#cop{animation:none}.rg{animation:none;opacity:0}}
+@media (prefers-reduced-motion:reduce){#tk div{animation:none}.s.on{transition:none}.s.on .w>*{animation:none}}
+</style></head><body>
+<div id="tk"><div><span>SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // </span><span>SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // SYSTEM 1 // SYSTEM 2 // OPTIMISM BIAS // PRESENT BIAS // SECURITY FATIGUE // </span></div></div>
+<div id="bar"></div>
+<button class="b cy" id="snd">SOUND ON</button>
+
+<section class="s on" data-n="01"><div class="w hero" style="text-align:center;padding-top:4vh">
+<h1 class="bt">Cognitive <span class="c2">Biases</span> &amp; Heuristics</h1>
+<p class="lead" style="display:inline-block;text-align:left">in Security Decisions</p>
+<div><span class="ch">Dual-Process Theory</span><span class="ch">Optimism Bias</span><span class="ch">Present Bias</span><span class="ch">Security Fatigue</span></div>
+<button class="b" id="start" style="font-size:1.1rem;padding:14px 28px;margin-top:12px">Start Cyber-Defense Simulation</button>
+</div></section>
+
+<section class="s" data-n="02"><div class="w"><h2 class="bt">Dual-Process <span class="c2">Theory</span></h2>
+<p class="lead">Fast gut vs. slow thinking.</p>
+<div><span class="ch">System 1: fast, automatic</span><span class="ch">System 2: slow, careful</span></div>
+<div class="win"><div class="stk">LEVEL 01</div><div class="tb"><i></i><i></i><span>fast_bot.exe</span></div><div class="wb" id="g2"></div></div></div></section>
+
+<section class="s" data-n="03"><div class="w"><h2 class="bt">Optimism <span class="c2">Bias</span></h2>
+<p class="lead">&ldquo;It won&rsquo;t happen to me.&rdquo;</p>
+<div class="win"><div class="stk">LEVEL 02</div><div class="tb"><i></i><i></i><span>risk_roulette.exe</span></div><div class="wb" id="g3"></div></div></div></section>
+
+<section class="s" data-n="04"><div class="w"><h2 class="bt">Present <span class="c2">Bias</span></h2>
+<p class="lead">Now feels bigger than later.</p>
+<div class="win"><div class="stk">LEVEL 03</div><div class="tb"><i></i><i></i><span>update_snooze.exe</span></div><div class="wb" id="g4"></div></div></div></section>
+
+<section class="s" data-n="05"><div class="w"><h2 class="bt">Security <span class="c2">Fatigue</span></h2>
+<p class="lead">Too many prompts. Tired brains say yes.</p>
+<div class="win"><div class="stk">LEVEL 04</div><div class="tb"><i></i><i></i><span>prompt_overload.exe</span></div><div class="wb" id="g5"></div></div></div></section>
+
+<section class="s" data-n="06"><div class="w"><h2 class="bt">Wrap-<span class="c2">up</span></h2>
+<div><span class="ch">Safe = easy default</span><span class="ch">Show real odds</span><span class="ch">Auto-update</span><span class="ch">Fewer prompts</span></div>
+<div class="win"><div class="stk">FINAL SCORE</div><div class="tb"><i></i><i></i><span>scoreboard.exe</span></div><div class="wb" id="sb"></div></div></div></section>
+
+<div id="copw"><svg id="cop" viewBox="0 0 120 150" aria-hidden="true"><rect x="22" y="88" width="76" height="58" rx="18" fill="#1f2f8f" stroke="#000" stroke-width="4"/><polygon points="60,90 67,100 60,128 53,100" fill="#E50914" stroke="#000" stroke-width="2.5"/><path d="M38 102l3.5 7 7.5 1-5.5 5 1.5 7.5-7-3.8-7 3.8 1.5-7.5-5.5-5 7.5-1z" transform="translate(-4 0)" fill="#FFD84D" stroke="#000" stroke-width="2"/><circle cx="31" cy="66" r="6" fill="#FFD3B0" stroke="#000" stroke-width="3"/><circle cx="89" cy="66" r="6" fill="#FFD3B0" stroke="#000" stroke-width="3"/><circle cx="60" cy="62" r="28" fill="#FFD3B0" stroke="#000" stroke-width="4"/><path d="M30 52Q30 18 60 16Q90 18 90 52Z" fill="#1f2f8f" stroke="#000" stroke-width="4"/><rect x="28" y="46" width="64" height="9" rx="3" fill="#0D0D0D"/><circle cx="60" cy="32" r="7" fill="#FFD84D" stroke="#000" stroke-width="2.5"/><g class="m-n"><circle cx="49" cy="68" r="5.5" fill="#fff" stroke="#000" stroke-width="2"/><circle cx="71" cy="68" r="5.5" fill="#fff" stroke="#000" stroke-width="2"/><circle cx="50" cy="69" r="2.5" fill="#000"/><circle cx="72" cy="69" r="2.5" fill="#000"/><path d="M46 80Q53 74 60 80Q67 74 74 80Q67 86 60 82Q53 86 46 80Z" fill="#3b2314"/><path d="M52 87Q60 92 68 87" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/></g><g class="m-h"><path d="M43 70Q49 62 55 70M65 70Q71 62 77 70" fill="none" stroke="#000" stroke-width="3.5" stroke-linecap="round"/><path d="M46 80Q53 74 60 80Q67 74 74 80Q67 84 60 81Q53 84 46 80Z" fill="#3b2314"/><path d="M49 85Q60 100 71 85Z" fill="#7a0509" stroke="#000" stroke-width="2.5"/></g><g class="m-a"><circle cx="49" cy="69" r="5" fill="#fff" stroke="#000" stroke-width="2"/><circle cx="71" cy="69" r="5" fill="#fff" stroke="#000" stroke-width="2"/><circle cx="50" cy="70" r="2.5" fill="#000"/><circle cx="72" cy="70" r="2.5" fill="#000"/><path d="M41 59L57 65M79 59L63 65" stroke="#000" stroke-width="4" stroke-linecap="round"/><path d="M46 80Q53 76 60 80Q67 76 74 80Q67 84 60 81Q53 84 46 80Z" fill="#3b2314"/><path d="M50 90Q60 80 70 90Z" fill="#7a0509" stroke="#000" stroke-width="2.5"/></g></svg><div id="cb"></div></div>
+<div id="hkw"><svg id="hk" viewBox="0 0 120 150" aria-hidden="true"><rect x="18" y="90" width="84" height="56" rx="20" fill="#161616" stroke="#fff" stroke-width="4"/><rect x="34" y="112" width="52" height="30" rx="3" fill="#222" stroke="#E50914" stroke-width="3"/><text x="60" y="132" font-size="14" text-anchor="middle" fill="#E50914" font-family="Courier New,monospace" font-weight="700">&gt;_</text><circle cx="60" cy="60" r="40" fill="#161616" stroke="#fff" stroke-width="4"/><ellipse cx="60" cy="64" rx="26" ry="24" fill="#E8E8F0" stroke="#000" stroke-width="3"/><g class="m-n"><circle cx="50" cy="62" r="6" fill="#fff" stroke="#000" stroke-width="2.5"/><circle cx="70" cy="62" r="6" fill="#fff" stroke="#000" stroke-width="2.5"/><circle cx="51" cy="63" r="3" fill="#000"/><circle cx="71" cy="63" r="3" fill="#000"/><path d="M50 80H70" stroke="#000" stroke-width="3" stroke-linecap="round"/></g><g class="m-h"><path d="M43 63Q50 55 57 63M63 63Q70 55 77 63" fill="none" stroke="#000" stroke-width="3.5" stroke-linecap="round"/><path d="M42 52L58 58M78 52L62 58" stroke="#000" stroke-width="3.5" stroke-linecap="round"/><path d="M45 74Q60 96 75 74Z" fill="#000"/><path d="M50 75H70" stroke="#fff" stroke-width="3"/></g><g class="m-s"><circle cx="50" cy="63" r="6" fill="#fff" stroke="#000" stroke-width="2.5"/><circle cx="70" cy="63" r="6" fill="#fff" stroke="#000" stroke-width="2.5"/><circle cx="50" cy="65" r="3" fill="#000"/><circle cx="70" cy="65" r="3" fill="#000"/><path d="M42 56L56 50M78 56L64 50" stroke="#000" stroke-width="3.5" stroke-linecap="round"/><path d="M50 85Q60 75 70 85" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/><ellipse class="tr" cx="46" cy="72" rx="3" ry="5" fill="#35C9FF"/><ellipse class="tr t2" cx="74" cy="72" rx="3" ry="5" fill="#35C9FF"/></g></svg><div id="hb"></div></div>
+<div id="slp"><svg viewBox="0 0 200 200" aria-hidden="true" width="100%" height="100%"><g fill="#fff" stroke="#000" stroke-width="6" stroke-linejoin="round"><rect x="52" y="30" width="20" height="74" rx="10"/><rect x="76" y="16" width="20" height="88" rx="10"/><rect x="100" y="20" width="20" height="84" rx="10"/><rect x="124" y="40" width="18" height="64" rx="9"/><rect x="18" y="98" width="48" height="22" rx="11"/><rect x="46" y="90" width="100" height="76" rx="30"/></g><rect x="58" y="160" width="78" height="32" rx="6" fill="#1f2f8f" stroke="#000" stroke-width="6"/></svg></div>
+<div id="flash"><span>SLAP!</span></div>
+<svg id="armsvg" aria-hidden="true"><line id="armo" stroke="#000" stroke-width="16" stroke-linecap="round"/><line id="arm" stroke="#1f2f8f" stroke-width="9" stroke-linecap="round"/><g id="hand"><rect x="-4.5" y="-24" width="9" height="16" rx="4.5" fill="#fff" stroke="#000" stroke-width="3"/><circle r="12" fill="#fff" stroke="#000" stroke-width="3"/></g></svg>
+<nav><button class="b cy" id="pv">PREV</button><div id="dots"></div><button class="b" id="nx">NEXT</button></nav>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},AC=null,snd=true;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state=='suspended')AC.resume();return AC}
+function tn(f,d,ty,t0,v,f2){var a=ac();if(!a||!snd)return;var t=a.currentTime+(t0||0),o=a.createOscillator(),g=a.createGain();o.type=ty;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.linearRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.02)}
+var S={click:function(){tn(1400,.03,'square',0,.04)},
+bell:function(){tn(880,.6,'sine',0,.12);tn(1320,.7,'sine',.12,.1)},
+alert:function(){tn(900,.12,'square',0,.06);tn(900,.12,'square',.2,.06)},
+beep:function(){tn(700,.05,'square',0,.03)},
+siren:function(){tn(220,.5,'sawtooth',0,.08,440);tn(440,.5,'sawtooth',.5,.08,220)}};
+$('snd').onclick=function(){snd=!snd;this.textContent=snd?'SOUND ON':'SOUND OFF';if(snd){ac();S.click()}};
+addEventListener('pointerdown',ac,{once:true});
+var i;
+var sl=document.querySelectorAll('.s'),N=sl.length,cur=0,sc={a:0,b:0,c:0,d:0},iv2,iv3,iv4,iv5,tk=0,dots=$('dots');
+for(i=0;i<N;i++)dots.appendChild(document.createElement('i'));
+function stop(){tk++;clearInterval(iv2);clearInterval(iv3);clearInterval(iv4);clearInterval(iv5)}
+function go(n){if(n<0||n>=N)return;stop();cur=n;sl.forEach(function(s,j){s.classList.toggle('on',j==n)});
+[].forEach.call(dots.children,function(x,j){x.className=j==n?'on':''});
+$('bar').style.width=((n+1)/N*100)+'%';try{history.replaceState(null,'','#s'+(n+1))}catch(e){}
+if(n==5)board();S.click()}
+$('pv').onclick=function(){go(cur-1)};$('nx').onclick=function(){go(cur+1)};
+$('start').onclick=function(){S.bell();setTimeout(function(){go(1)},250)};
+addEventListener('keydown',function(e){if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
+// 2: fast bot race
+var M2=[{m:'URGENT: Your account is suspended! Verify now!',u:'secure-acc0unt-verify.ru',f:1},{m:'Team meeting moved to 3 pm. See the calendar.',u:'calendar.university.edu',f:0},{m:'Parcel delayed. Pay a $1 fee to release it.',u:'post-delivery-fee.top',f:1},{m:'You won a free phone! Claim in 2 minutes!',u:'fr33-prize.click',f:1},{m:'The password reset you asked for is ready.',u:'accounts.university.edu',f:0},{m:'Bank alert: confirm your identity NOW.',u:'bank-secure-alerts.top',f:1}],r2,hp;
+function hud(){return '<span>Message '+(r2+1)+'/6</span><span>'+'<b class="pip"></b>'.repeat(Math.max(hp,0))+'</span><span>'+sc.a+' pts</span>'}
+function init2(){stop();sc.a=0;$('g2').innerHTML='<p>Messages race in and each has a 6-second fuse. Go with your gut, or inspect. You have 3 lives.</p><button class="b" id="s2">Start</button>';$('s2').onclick=function(){S.click();r2=0;hp=3;sc.a=0;round2()}}
+function round2(){stop();var my=tk;
+if(r2>=6||hp<=0){S[hp>0&&sc.a>=40?'bell':'alert']();$('g2').innerHTML='<p><b>Score: '+sc.a+' / 60</b></p><p>'+(hp<=0?'Out of hearts. System 1 got tricked.':sc.a>=40?'Slow thinking wins!':'Some gut calls were lucky. Be careful.')+'</p><button class="b" id="s2">Play again</button>';$('s2').onclick=init2;return}
+var m=M2[r2],n=60;S.alert();
+$('g2').innerHTML='<div class="hud" id="hd">'+hud()+'</div><div class="msg">'+m.m+'</div><div class="mt"><i class="pk" id="tm" style="width:100%"></i></div><div id="ac" class="row"><button class="b" id="q">Click it (System 1)</button><button class="b cy" id="i">Inspect (System 2)</button></div><p id="fb" class="fb"></p>';
+function nxt(){setTimeout(function(){if(tk==my){r2++;round2()}},2000)}
+function lock(){clearInterval(iv2);$('q').disabled=$('i').disabled=true}
+function clk(){lock();if(m.f){hp--;fx(0);$('fb').textContent='Phish! Gut speed fell for it.'}else{sc.a+=5;fx(1);$('fb').textContent='It was real. Lucky! Gut speed is a gamble.'}$('hd').innerHTML=hud();nxt()}
+iv2=setInterval(function(){n--;$('tm').style.width=(n/60*100)+'%';if(n<=0)clk()},100);
+$('q').onclick=clk;
+$('i').onclick=function(){clearInterval(iv2);S.click();$('ac').innerHTML='<div class="url" style="width:100%">URL: '+m.u+'</div><button class="b li" id="ok">Looks safe</button><button class="b" id="rp">Report it</button>';
+function v(safe){$('ok').disabled=$('rp').disabled=true;if(safe==!m.f){sc.a+=10;fx(1);$('fb').textContent='Slow thinking nailed it.'}else if(m.f){hp--;fx(0);$('fb').textContent='You trusted a phish.'}else{fx(0);$('fb').textContent='False alarm. That one was real.'}$('hd').innerHTML=hud();nxt()}
+$('ok').onclick=function(){v(true)};$('rp').onclick=function(){v(false)}}}
+// 3: optimism, 12 months
+var O3=[['Same password on 5 sites',40],['Ignore updates',15],['Click unknown links',20],['No two-factor login',15],['Use a password manager',-20],['Turn on MFA',-15]],MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function init3(){stop();sc.b=0;var h='<p>Guess your odds, pick your habits, then live a year.</p>';
+O3.forEach(function(o){h+='<label class="o"><input type="checkbox" data-r="'+o[1]+'"> '+o[0]+'</label>'});
+h+='<p class="fb">Your gut says <b id="gv">10</b>% chance of a breach this year.<input type="range" id="gs" min="0" max="100" value="10"></p><div class="mt"><i class="pk" id="mi"></i></div><p id="pr"></p><button class="b" id="spin">Simulate 12 months</button><div class="mo" id="mo"></div><p id="rs" class="fb"></p>';
+$('g3').innerHTML=h;var cb=$('g3').querySelectorAll('input[type=checkbox]');
+function calc(){var p=8;cb.forEach(function(c){if(c.checked)p+=+c.dataset.r});return Math.max(3,Math.min(97,p))}
+function upd(){var p=calc();$('mi').style.width=p+'%';$('pr').innerHTML='Real yearly breach chance: <b>'+p+'%</b>'}
+cb.forEach(function(c){c.onchange=function(){S.click();upd()}});$('gs').oninput=function(){$('gv').textContent=this.value};upd();
+$('spin').onclick=function(){stop();var p=calc(),m=1-Math.pow(1-p/100,1/12),k=0,bad=0;sc.b=Math.round(30*(1-p/100));$('mo').innerHTML='';$('rs').textContent='';
+iv3=setInterval(function(){var hit=Math.random()<m;if(hit)bad++;var e=document.createElement('div');e.className=hit?'x':'o';e.innerHTML='<b>'+MO[k]+'</b><br>'+(hit?'BREACH':'SAFE');$('mo').appendChild(e);hit?S.siren():S.click();k++;
+if(k==12){clearInterval(iv3);var g=+$('gs').value;fx(bad?0:1);$('rs').innerHTML='<b>'+bad+' breach'+(bad==1?'':'es')+'</b> in 12 months. You guessed '+g+'%, reality was '+p+'%. '+(g<p?'That gap is optimism bias.':'Nice, your guess was realistic.')}},450)}}
+// 4: present bias
+var sn,t4,SZ=['Snooze 24h (keep watching)','Just 5 more minutes…','One last snooze, promise'];
+function init4(){stop();sc.c=0;$('g4').innerHTML='<p>A movie is on. An update pops up. A hacker is watching.</p><button class="b" id="s4">Start</button>';$('s4').onclick=function(){S.click();sn=0;t4=15;draw4();iv4=setInterval(function(){t4--;if(t4<=0)snz();else if($('tt'))$('tt').textContent=t4},1000)}}
+function snz(){sn++;fx(0);if(sn>=3){ransom();return}t4=15;draw4()}
+function draw4(){$('g4').innerHTML='<div class="hud"><span>Movie night</span><span>Snoozed '+sn+'/3</span></div><div class="trk"><span class="hk" style="left:'+(sn*30)+'%">HACKER</span><span class="you">YOU</span></div><div class="msg"><b>Update available</b><br>Fixes an active zero-day. Auto-restart in <b id="tt">'+t4+'</b>s</div><div class="row"><button class="b cy" id="sz">'+SZ[sn]+'</button><button class="b li" id="up">Restart &amp; Update Now</button></div>';
+$('sz').onclick=snz;
+$('up').onclick=function(){stop();fx(1);sc.c=Math.max(0,30-sn*10);$('g4').innerHTML='<p><b>Patched! Score: '+sc.c+' / 30</b></p><p>The boring choice protected future you.</p><button class="b" id="s4">Play again</button>';$('s4').onclick=init4}}
+function ransom(){stop();sc.c=0;$('g4').innerHTML='<div class="rw"><h3 style="margin:0 0 8px">YOUR FILES ARE ENCRYPTED</h3><p>Pay 2 BTC to unlock them. (Simulation only!)</p><p>Three snoozes left the door open. Present bias picked the movie.</p><button class="b" id="s4">Try again</button></div>';$('s4').onclick=init4}
+// 5: prompt overload
+var PN=['Accept cookies?','MFA code needed','Change password','Allow notifications?','Terms updated','Rate our app!','Confirm it’s you','Update privacy'],en,left,sp,bad,tc;
+function init5(){stop();sc.d=0;$('g5').innerHTML='<p>Prompts keep arriving and drain your energy. Never press Accept All. Find the small <b>Dismiss Noise</b> button on each.</p><button class="b" id="s5">Start crisis</button>';$('s5').onclick=function(){S.click();run5()}}
+function run5(){en=100;left=8;sp=0;bad=0;tc=0;$('g5').innerHTML='<div class="mt"><i id="en" style="width:100%"></i></div><p class="fb" style="margin:0">Cognitive energy</p><div class="area" id="ar"></div>';
+function fin(d){d.remove();left--;if(left==0)end(true)}
+function spawn(){var t=PN[sp++],d=document.createElement('div');d.className='pp';d.style.left=(Math.random()*52+2)+'%';d.style.top=(Math.random()*58+2)+'%';
+d.innerHTML='<b>'+t+'</b><br><button class="b">Accept All</button><button class="b sm">Dismiss Noise</button>';var bs=d.querySelectorAll('button');
+bs[0].onclick=function(){bad++;en-=15;fx(0);fin(d)};bs[1].onclick=function(){fx(1);fin(d)};$('ar').appendChild(d);S.alert()}
+iv5=setInterval(function(){tc++;if(tc%6==1&&sp<8)spawn();if(tc%3==0){en-=.8*$('ar').children.length;S.beep();$('en').style.width=Math.max(0,en)+'%';if(en<=0)end(false)}},150)}
+function end(win){stop();sc.d=win?Math.max(0,Math.round(en/5)-bad*4):0;win?S.bell():fx(0);
+$('g5').innerHTML='<p><b>'+(win?'Noise cleared! Score: '+sc.d+' / 20':'Energy empty. Score: 0 / 20')+'</b></p><p>'+(win?(bad?bad+' desperate “Accept All” click(s) cost you.':'No desperate clicks. Calm brains choose safely.'):'Tired users click Accept All. Good design should not drain us like this.')+'</p><button class="b" id="s5">Play again</button>';$('s5').onclick=init5}
+// 6: scoreboard
+function board(){var R=[['Dual-Process',sc.a,60],['Optimism Bias',sc.b,30],['Present Bias',sc.c,30],['Fatigue',sc.d,20]],tot=0,h='';
+R.forEach(function(r){tot+=r[1];h+='<div class="sb"><span>'+r[0]+'</span><div class="mt"><i style="width:'+(r[1]/r[2]*100)+'%"></i></div><b>'+r[1]+'/'+r[2]+'</b></div>'});
+h+='<p style="margin:14px 0 0"><b>Total: '+tot+' / 140</b><br>'+(tot>=105?'Cyber-defense champion! ':tot>=60?'Solid defender. Keep thinking slow.':'Brains are biased. That is the point!')+'</p>';$('sb').innerHTML=h;if(tot>=105)S.bell()}
+var cop=$('cop'),sv=$('armsvg'),ao=$('armo'),ar=$('arm'),hd=$('hand'),cbb=$('cb'),cpId=0,cpS=0,cpT,cpSay=['CLICK!','On it!','Gotcha!','Case closed','Copy that','Stay safe!'],cpRM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function cpEase(x){return 1-Math.pow(1-x,3)}
+function cpTap(b){cbb.textContent=cpSay[cpS++%cpSay.length];cbb.style.opacity=1;clearTimeout(cpT);cpT=setTimeout(function(){cbb.style.opacity=0},900);if(cpRM)return;
+var r=b.getBoundingClientRect(),c=cop.getBoundingClientRect(),sx=c.left+c.width*.8,sy=c.top+c.height*.62,tx=r.left+r.width/2,ty=r.top+r.height/2,t0=performance.now(),id=++cpId,ringed=false;sv.style.visibility='visible';
+function fr(now){if(id!=cpId)return;var t=now-t0,p;if(t<320)p=cpEase(t/320);else if(t<440)p=1;else if(t<760)p=1-cpEase((t-440)/320);else{sv.style.visibility='hidden';return}
+if(t>=320&&!ringed){ringed=true;var g=document.createElement('div');g.className='rg';g.style.left=tx+'px';g.style.top=ty+'px';document.body.appendChild(g);setTimeout(function(){g.remove()},500)}
+var x=sx+(tx-sx)*p,y=sy+(ty-sy)*p,sc2=(t>=320&&t<440)?.8:1;[ao,ar].forEach(function(l){l.setAttribute('x1',sx);l.setAttribute('y1',sy);l.setAttribute('x2',x);l.setAttribute('y2',y)});hd.setAttribute('transform','translate('+x+','+y+') scale('+sc2+')');requestAnimationFrame(fr)}
+requestAnimationFrame(fr)}
+addEventListener('pointerdown',function(e){var b=e.target.closest&&e.target.closest('button');if(b&&!b.disabled&&b.id!='snd')cpTap(b)},true);
+var cpL,slp=$('slp'),fls=$('flash'),hkb=$('hb');
+function nz(d,v,t0,fq){var a=ac();if(!a||!snd)return;var t=a.currentTime+(t0||0),n=Math.floor(a.sampleRate*d),bf=a.createBuffer(1,n,a.sampleRate),c=bf.getChannelData(0);for(var q=0;q<n;q++)c[q]=(Math.random()*2-1)*(1-q/n);var s=a.createBufferSource(),g=a.createGain(),f=a.createBiquadFilter();f.type='highpass';f.frequency.value=fq||1200;s.buffer=bf;g.gain.value=v;s.connect(f);f.connect(g);g.connect(a.destination);s.start(t)}
+function sSlap(){nz(.18,.5,.22,900);tn(140,.2,'sine',.22,.3,40)}
+function sLaugh(){[0,.16,.32,.48].forEach(function(t,j){tn(420-j*40,.1,'square',.5+t,.05,300-j*30)})}
+function sCheer(){[523,659,784,1047].forEach(function(f,j){tn(f,.14,'triangle',j*.09,.12)});tn(1319,.4,'sine',.4,.1)}
+function sSob(){tn(520,.55,'sawtooth',.25,.035,260);tn(440,.6,'sawtooth',.85,.035,200)}
+function bub(el,txt){el.textContent=txt;el.style.opacity=1}
+function fx(good){var c=$('cop'),h=$('hk');clearTimeout(cpL);clearTimeout(cpT);c.classList.remove('h','a');h.classList.remove('h','s');void c.getBoundingClientRect();
+if(good){c.classList.add('h');h.classList.add('s');bub(cbb,'Nice one!');bub(hkb,'Noooo!');sCheer();sSob()}
+else{c.classList.add('a');h.classList.add('h');bub(cbb,'WRONG!');bub(hkb,'Hehehe!');sSlap();sLaugh();if(!cpRM){slp.classList.remove('go');void slp.offsetWidth;slp.classList.add('go');setTimeout(function(){fls.classList.remove('go');void fls.offsetWidth;fls.classList.add('go');document.body.classList.remove('shake');void document.body.offsetWidth;document.body.classList.add('shake')},220)}}
+cpL=setTimeout(function(){c.classList.remove('h','a');h.classList.remove('h','s');cbb.style.opacity=0;hkb.style.opacity=0},2000)}
+init2();init3();init4();init5();
+var hs=parseInt((location.hash||'').replace('#s',''),10);if(hs>1&&hs<=N)go(hs-1);else go(0);
+})();
+</script></body></html>
